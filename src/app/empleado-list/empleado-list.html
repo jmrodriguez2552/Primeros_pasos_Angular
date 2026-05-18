@@ -1,0 +1,61 @@
+<div class="mt-8 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden w-full max-w-4xl mx-auto">
+  
+  <!-- Encabezado de la sección -->
+  <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+    <h2 class="text-xl font-bold text-slate-800">Evaluación de Desempeño del Personal</h2>
+    <p class="text-sm text-slate-500 mt-1">Listado oficial de empleados y notas promedio de rendimiento</p>
+  </div>
+
+  <!-- Contenedor de la tabla responsiva -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse text-sm text-slate-600">
+      
+      <!-- Cabecera de la tabla -->
+      <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-xs tracking-wider">
+        <tr>
+          <th class="px-6 py-3">Empleado</th>
+          <th class="px-6 py-3">Puesto</th>
+          <th class="px-6 py-3">Departamento</th>
+          <th class="px-6 py-3 text-center">Promedio</th>
+          <th class="px-6 py-3">Estado / Alerta</th>
+        </tr>
+      </thead>
+
+      <!-- Cuerpo de la tabla -->
+      <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+        
+        <!-- 1. Estructura @for nativa de Angular (Requiere un 'track' obligatorio por rendimiento) -->
+        @for (employee of employees; track employee.id) {
+          <tr class="hover:bg-slate-50/70 transition-colors">
+            <td class="px-6 py-4 font-semibold text-slate-900">{{ employee.name }}</td>
+            <td class="px-6 py-4 text-slate-500">{{ employee.position }}</td>
+            <td class="px-6 py-4 text-slate-500">{{ employee.department }}</td>
+            <td class="px-6 py-4 text-center font-mono font-bold">{{ employee.rating }}</td>
+            
+            <td class="px-6 py-4">
+              <!-- 2. Estructura @if nativa de Angular para evaluar el promedio -->
+              @if (employee.rating < 5) {
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200 animate-pulse">
+                  🛑 Rendimiento Bajo
+                </span>
+              } @else {
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-green-50 text-green-600 border border-green-100">
+                  ✅ Satisfactorio
+                </span>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <!-- Bloque opcional que se muestra automáticamente si el array está vacío -->
+          <tr>
+            <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+              ⚠️ No hay empleados registrados en el sistema.
+            </td>
+          </tr>
+        }
+
+      </tbody>
+    </table>
+  </div>
+</div>
+

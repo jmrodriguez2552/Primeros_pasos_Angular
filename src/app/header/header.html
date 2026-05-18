@@ -1,0 +1,55 @@
+<nav
+  class="bg-white border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row justify-between items-center shadow-sm gap-4">
+
+  <!-- Saludo dinámico reactivo obtenido de la señal computada -->
+  <span class="text-xl font-bold text-slate-800 tracking-tight transition-all duration-300">
+    {{ greeting() }}
+  </span>
+
+  <!-- Selector de idiomas y botón de cierre de sesión y noticias -->
+  <div class="flex items-center space-x-6">
+    <button (click)="goDashboard()"
+    class="inline-flex items-center space-x-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold px-4 py-2 rounded-lg text-sm transition-colors border border-indigo-100 cursor-pointer">
+    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" id="dashboard" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color"><path id="secondary" d="M21,7V4a1,1,0,0,0-1-1H15a1,1,0,0,0-1,1V7a1,1,0,0,0,1,1h5A1,1,0,0,0,21,7ZM10,20V17a1,1,0,0,0-1-1H4a1,1,0,0,0-1,1v3a1,1,0,0,0,1,1H9A1,1,0,0,0,10,20Z" style="fill: none; stroke: rgb(44, 169, 188); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path><path id="primary" d="M9,12H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H9a1,1,0,0,1,1,1v7A1,1,0,0,1,9,12Zm12,8V13a1,1,0,0,0-1-1H15a1,1,0,0,0-1,1v7a1,1,0,0,0,1,1h5A1,1,0,0,0,21,20Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+    <span>Dashboard</span>
+    </button>
+    <button (click)="goNews()"
+      class="inline-flex items-center space-x-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold px-4 py-2 rounded-lg text-sm transition-colors border border-indigo-100 cursor-pointer">
+      <!-- Icono de periódico SVG -->
+      <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+      </svg>
+      <span>Noticias</span>
+    </button>
+    <!-- Grupo de botones de idioma -->
+    <div class="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+      <button (click)="selectLanguaje('es')"
+        [class]="languaje() === 'es' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+        ES
+      </button>
+      <button (click)="selectLanguaje('en')"
+        [class]="languaje() === 'en' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+        EN
+      </button>
+      <button (click)="selectLanguaje('fr')"
+        [class]="languaje() === 'fr' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+        FR
+      </button>
+      <button (click)="goHelp()" 
+      class="inline-flex items-center space-x-2 bg-slate-50 hover:bg-slate-100 text-slate-600 font-semibold px-4 py-2 rounded-lg text-sm transition-colors border border-slate-200 cursor-pointer"
+>
+  <span>Ayuda</span>
+</button>
+    </div>
+
+    <!-- Botón de salir -->
+    <button (click)="logout()"
+      class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium px-4 py-2 rounded-lg text-sm border border-rose-200 transition-colors">
+      Cerrar Sesión
+    </button>
+  </div>
+</nav>

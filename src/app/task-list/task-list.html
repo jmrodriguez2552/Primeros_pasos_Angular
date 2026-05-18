@@ -1,0 +1,56 @@
+<div class="mt-8 bg-slate-50 border border-slate-200 p-6 rounded-2xl max-w-xl shadow-sm">
+  <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center justify-between">
+    <span>📋 Gestión de Tareas del Admin</span>
+    <!-- Leemos el valor de la señal computada del contador -->
+    <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+      Pendientes: {{ taskPendingCount() }}
+    </span>
+  </h2>
+
+  <!-- Alerta dinámica basada en la señal computada (solo se muestra si hay texto) -->
+  <div *ngIf="alertTasksPending()" class="mb-4 p-4 bg-amber-50 border-l-4 border-amber-500 text-amber-800 text-sm font-medium rounded-r-lg">
+    {{ alertTasksPending() }}
+  </div>
+
+  <!-- Formulario para añadir tareas -->
+  <form (ngSubmit)="insertTask()" class="flex space-x-2 mb-6">
+    <input 
+      type="text" 
+      [(ngModel)]="newTaskTitle" 
+      name="newTask"
+      placeholder="Nueva tarea de administración..."
+      class="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800"
+    >
+    <button 
+      type="submit" 
+      class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors"
+    >
+      Añadir
+    </button>
+  </form>
+
+  <!-- Lista de tareas -->
+  <ul class="space-y-2">
+    <!-- iteramos leyendo la señal de tareas con tasks() -->
+    <li *ngFor="let tarea of tasks()" class="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-xl hover:shadow-xs transition-shadow">
+      <div class="flex items-center space-x-3">
+        <input 
+          type="checkbox" 
+          [checked]="tarea.completed" 
+          (change)="conmutarEstado(tarea.id)"
+          class="h-4 w-4 text-indigo-600 border-slate-300 rounded-sm focus:ring-indigo-500"
+        >
+        <span [class.line-through]="tarea.completed" [class.text-slate-400]="tarea.completed" class="text-sm font-medium text-slate-700">
+          {{ tarea.title }}
+        </span>
+      </div>
+      <button 
+        (click)="deleteTask(tarea.id)" 
+        class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1 rounded transition-colors"
+      >
+        Eliminar
+      </button>
+    </li>
+  </ul>
+</div>
+

@@ -1,0 +1,27 @@
+<div class="min-h-screen bg-slate-50 font-sans">
+  <app-header></app-header>
+
+  <main class="max-w-2xl mx-auto mt-12 p-6">
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+      
+      <!-- Indicador dinámico del ID -->
+      <span class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full mb-4">
+        Artículo ID: #{{ newsId() }}
+      </span>
+
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-4">Contenido Completo del Artículo</h1>
+      
+      <p class="text-slate-600 leading-relaxed mb-6">
+        Estás leyendo el cuerpo de la noticia indexada bajo el código <strong>{{ newsId() }}</strong>. En un entorno de producción real, este identificador se enviaría a un servicio HTTP para consultar los textos y las imágenes desde una base de datos mediante una petición REST.
+      </p>
+
+      <button 
+        (click)="goBack()" 
+        class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-4 py-2 rounded-lg text-sm transition-colors border border-slate-200 cursor-pointer"
+      >
+        ← Volver a Noticias
+      </button>
+    </div>
+  </main>
+</div>
+

@@ -1,0 +1,8 @@
+<div class="space-y-4 animate-fade-in">
+      @for (faq of faqs; track faq.q) {
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+          <h4 class="font-bold text-slate-800 text-sm mb-1">🔹 {{ faq.q }}</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">{{ faq.a }}</p>
+        </div>
+      }
+    </div>

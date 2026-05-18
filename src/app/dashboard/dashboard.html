@@ -1,0 +1,25 @@
+    <div class="min-h-screen bg-slate-50 font-sans">
+      
+      <!-- Barra de navegación superior header -->
+      <app-header></app-header>
+
+      <!-- Contenido Principal -->
+      <main class="max-w-4xl mx-auto mt-12 p-6">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="p-3 bg-green-100 text-green-600 rounded-full text-xl">🎉</span>
+            <h1 class="text-2xl font-bold text-slate-800">¡Bienvenido al Panel de Control Privado!</h1>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Has iniciado sesión correctamente. Esta ruta está completamente protegida por tu guardián de rutas (Route Guard) y no es accesible sin un token válido en el almacenamiento local.
+          </p>
+          <hr class="border-slate-200 my-6">
+
+          <!-- 3. Renderizamos el componente de tareas de administración -->
+          <app-task-list></app-task-list>
+
+          <app-empleado-list></app-empleado-list>
+          
+        </div>
+      </main>
+    </div>
