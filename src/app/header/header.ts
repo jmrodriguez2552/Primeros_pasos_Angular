@@ -1,7 +1,7 @@
 import { Component , inject} from '@angular/core';
 import { ConfigService, language } from '../config';
 import { Router } from '@angular/router';
-import { Auth } from '../auth';
+import { Auth } from '../auth/auth';
 
 
 

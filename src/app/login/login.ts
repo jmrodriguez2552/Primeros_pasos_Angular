@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth } from '../auth';
+import { Auth } from '../auth/auth';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,18 +12,35 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.css',
 })
 export class Login {
-  username = "";
+  email = "";
   password = "";
   errorMessage = "";
 
   constructor(private auth :Auth, private router: Router){}
 
   onLogin(): void {
-    const success = this.auth.login(this.username, this.password);
-    if (success) {
-      this.router.navigate(["/dashboard"]);
-    }else {
-      this.errorMessage = "Usuario o contraseña incorrectos";
+
+     // Limpiamos mensajes de error previos
+    this.errorMessage = "";
+
+    // Validamos campos vacíos antes de lanzar la petición HTTP
+    if (!this.email || !this.password) {
+      this.errorMessage = "Por favor, rellena todos los campos.";
+      return;
     }
+
+    // Llamamos al servicio asíncrono y nos suscribimos al resultado
+    this.auth.login(this.email, this.password).subscribe({
+      next: (response) => {
+        this.router.navigate(["/dashboard"]);
+      },
+      error: (err) => {
+        if (err.status === 401) {
+          this.errorMessage = "Email o contraseña incorrectos.";
+        } else {
+          this.errorMessage = "Error de conexión con el servidor de la API.";
+        }
+      }
+    });
   }
 }

@@ -1,15 +1,11 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TasksService, Task } from './task.service';
 
 // Manejo de Estado con Signals (notifica a Angular cuando cambia. Esto evita que el framework tenga que revisar toda la aplicación, mejorando drásticamente el rendimiento)
 // Se complementan con computed para valores derivados, que se actualizan automáticamente SOLO cuando las señales de las que dependen cambian, evitando cálculos innecesarios y mejorando la eficiencia.
 // Definición de la interfaz para las tareas
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
 
 @Component({
   selector: 'app-task-list',
@@ -18,57 +14,79 @@ interface Task {
   templateUrl: './task-list.html',
   styleUrl: './task-list.css',
 })
-export class TaskList {
-  // 1. Señal principal que almacena el array de tareas de forma reactiva
-  tasks = signal<Task[]>([
-    { id: 1, title: 'Configurar entorno Angular', completed: true },
-    { id: 2, title: 'Añadir diseño con Tailwind CSS v4', completed: true },
-    { id: 3, title: 'Simular generación de JWT', completed: true },
-    {id: 4, title: "Lista de tareas", completed:false},
-  ])
-
-  // Variable auxiliar para el input del formulario
+export class TaskList implements OnInit {
+  // 1. Inicializamos la señal vacía, los datos vendrán de FastAPI y MongoDB
+  tasks = signal<Task[]>([]);
   newTaskTitle = '';
 
   // 2. Señal computada para contar el número de tareas pendientes
   // Se actualiza de forma automática y óptima SOLO cuando la señal 'tareas' cambia
-  taskPendingCount  = computed(() => {
-    return this.tasks().filter(task => !task.completed).length;
+  taskPendingCount = computed(() => {
+    return this.tasks().filter((task) => !task.completed).length;
   });
 
   // 3. Señal computada que evalúa el volumen de trabajo y devuelve el mensaje de alerta si hay más de 5 tareas pendientes
   alertTasksPending = computed(() => {
     const pendings = this.taskPendingCount();
-  if (pendings > 5) {
-    return `⚠️ ¡Atención Administrador! Tienes ${pendings} tareas pendientes!`;
-  }
-  return '';
+    if (pendings > 5) {
+      return `⚠️ ¡Atención Administrador! Tienes ${pendings} tareas pendientes!`;
+    }
+    return '';
   });
+
+  // Inyectamos el servicio en el constructor
+  constructor(private tasksService: TasksService) {}
+
+  // Al cargar la pantalla, traemos las tareas reales guardadas en MongoDB
+  ngOnInit(): void {
+    this.tasksService.getTasks().subscribe({
+      next: (tasksFromBackend) => {
+        this.tasks.set(tasksFromBackend); // Guardamos las tareas en la señal
+      },
+      error: (err) => console.error('Error al cargar tareas:', err),
+    });
+  }
 
   // Método para agregar una nueva tarea modificando la señal
   insertTask(): void {
     if (!this.newTaskTitle.trim()) return; // Evitar agregar tareas vacías
-    const newTask: Task = {
-      id: Date.now(), // Generar un ID único basado en la marca de tiempo
-      title: this.newTaskTitle,
-      completed: false,
-    };
-    
-    // Actualizamos la señal usando el método update()
-    this.tasks.update(currentTasks => [...currentTasks, newTask]);
-    this.newTaskTitle = ''; // Limpiar el input después de agregar la tarea
+
+    this.tasksService.createTask(this.newTaskTitle).subscribe({
+      next: (createdTask) => {
+        this.tasks.update((currentTasks) => [...currentTasks, createdTask]);
+        this.newTaskTitle = '';
+      },
+      error: (err) => console.error('Error al crear tarea:', err),
+    });
+
   }
 
   // Método para alternar el estado de completado de una tarea
-  conmutarEstado(id: number): void {
-    this.tasks.update(currentTasks => 
-      currentTasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t)
-    );
+  conmutarEstado(id: string): void {
+    const actuallyTask = this.tasks().find((t) => t.id === id);
+    if (!actuallyTask) return;
+
+    const newStage = !actuallyTask.completed;
+
+    this.tasksService.updateTaskStatus(id, newStage).subscribe({
+      next: (updatedTask) => {
+        this.tasks.update((currentTasks) =>
+          currentTasks.map((t) => (t.id === id ? updatedTask : t)),
+        );
+      },
+      error: (err) => console.error('Error al actualizar el estado', err),
+    });
   }
 
-  // Método para eliminar una tarea
-  deleteTask(id: number): void {
-    this.tasks.update(currentTasks => currentTasks.filter(t => t.id !== id));
+  // Método para eliminar la tarea de MongoDB
+  deleteTask(id: string): void { 
+    this.tasksService.deleteTask(id).subscribe({
+      next: () => {
+        // Si el backend la elimina con éxito, la quitamos de la señal
+        this.tasks.update(currentTasks => currentTasks.filter(t => t.id !== id));
+      },
+      error: (err) => console.error('Error al eliminar tarea:', err)
+    });
   }
-
 }
+

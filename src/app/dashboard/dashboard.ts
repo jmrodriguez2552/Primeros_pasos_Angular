@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth } from '../auth';
+import { Auth } from '../auth/auth';
 import { TaskList } from '../task-list/task-list';
 import { EmpleadoList } from '../empleado-list/empleado-list';
 import { Header } from '../header/header';
