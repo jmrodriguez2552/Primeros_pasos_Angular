@@ -10,6 +10,7 @@ import { Register_employeeComponent } from './register_employee/register_employe
 import { HomeComponent } from './home/home.component';
 import { ManualsComponent } from './manuals/manuals.component';
 
+
 export const routes: Routes = [
     {path: "login", component: Login},
     // Rutas protegidas con authGuard

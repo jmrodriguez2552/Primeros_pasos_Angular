@@ -1,14 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , signal, computed} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Auth } from '../auth/auth';
+import { Event, EventService } from '../services/event.service';
 import { Router } from '@angular/router';
-
-interface Events {
-  fecha: string;
-  texto: string;
-}
 
 
 @Component({
@@ -21,14 +17,13 @@ interface Events {
 export class HomeComponent implements OnInit {
   employeeName = '';
   employeeSurname = '';
-  selectDate= '';
+  selectDate= signal<string>('');
   newText='';
-  events:Events[]= [{
-    fecha: '', texto: ''
-  }];
+  events = signal<Event[]>([]);
 
 
-  constructor(private auth:Auth, private router:Router) {}
+
+  constructor(private auth:Auth, private eventService:EventService, private router:Router) {}
 
   ngOnInit():void {
     const token = localStorage.getItem('token');
@@ -41,21 +36,39 @@ export class HomeComponent implements OnInit {
         this.employeeName = 'Empleado';
       }
     }
+
+    this.eventService.getEvents().subscribe({
+      next: (eventsFromBackend) => {
+        this.events.set(eventsFromBackend);
+      },
+      error: (err) => console.error('Error al traer eventos de la agenda:', err)
+    });
   }
+
 
   insertEvent():void {
     if(!this.selectDate || !this.newText.trim()) return;
-    this.events.push({
-      fecha : this.selectDate,
-      texto : this.newText
+    
+    this.eventService.createEvent(this.selectDate(), this.newText).subscribe({
+      next: (newEventCreated) => {
+        // Actualizamos la señal con el evento real indexado por Mongo
+        this.events.update(currentEvents => [...currentEvents, newEventCreated]);
+        this.newText="";
+      },
+      error: (err) => console.error("Error al guardar el evento:", err)
     });
-    this.newText='';
+    
   }
 
-  get eventFilter(): Events[] {
-    if (!this.selectDate) return [];
-    return this.events.filter(e => e.fecha === this.selectDate);
-  }
+  // Computed optimizado sobre la Signal
+  eventFilter= computed(() => {
+    const currentList = this.events();
+    const dateFilter = this.selectDate();
+
+    if (!dateFilter) return [];
+
+    return currentList.filter(e => e.date === dateFilter);
+  });
 
   logout(): void {
     this.auth.logout();
