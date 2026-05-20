@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { Auth } from '../auth/auth';
 import { Event, EventService } from '../services/event.service';
 import { Router } from '@angular/router';
+import { error } from 'console';
 
 
 @Component({
@@ -73,6 +74,17 @@ export class HomeComponent implements OnInit {
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  deleteEvent(id:string | undefined): void {
+    if(!id) return;
+
+    this.eventService.deleteEvent(id).subscribe({
+      next: () => {
+        this.events.update(currentEvents => currentEvents.filter(e => e.id !== id));
+      },
+      error: (err) => console.error("Error al eliminar el evento:", err)
+    });
   }
 
 }

@@ -1,41 +1,63 @@
 <div class="min-h-screen bg-slate-50 font-sans p-6">
-  
   <!-- Cabecera con Saludo Personalizado -->
-  <header class="max-w-5xl mx-auto bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 shadow-md text-white mb-8">
+  <header
+    class="max-w-5xl mx-auto bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 shadow-md text-white mb-8"
+  >
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-extrabold tracking-tight">¡Hola, {{ employeeName }} {{ employeeSurname }}! 👋</h1>
+        <h1 class="text-3xl font-extrabold tracking-tight">
+          ¡Hola, {{ employeeName }} {{ employeeSurname }}! 👋
+        </h1>
         <p class="text-indigo-100 text-sm mt-1">Bienvenido a tu portal corporativo de trabajo.</p>
       </div>
       <button
-      (click)="logout()"
-      class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium px-4 py-2 rounded-lg text-sm border border-rose-200 transition-colors"
-    >
-      Cerrar Sesión
-    </button>
+        (click)="logout()"
+        class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium px-4 py-2 rounded-lg text-sm border border-rose-200 transition-colors"
+      >
+        Cerrar Sesión
+      </button>
     </div>
   </header>
 
   <!-- Área de Contenido Principal -->
   <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-    
     <!-- COLUMNA 1 y 2: Calendario de Tareas y Eventos -->
     <div class="md:col-span-2 bg-white border border-slate-200 p-6 rounded-2xl shadow-xs">
       <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2">
         <span>📅 Agenda de Eventos y Tareas</span>
       </h2>
-      
+
       <!-- Selector y Agregador de eventos -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl mb-6 border border-slate-100">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl mb-6 border border-slate-100"
+      >
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">Seleccionar Fecha</label>
-          <input type="date" [(ngModel)]="selectDate" (ngModelChange)="selectDate.set($event)" name="selectDate" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          <input
+            type="date"
+            [(ngModel)]="selectDate"
+            (ngModelChange)="selectDate.set($event)"
+            name="selectDate"
+            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Nueva Tarea / Evento</label>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Nueva Tarea / Evento</label
+          >
           <div class="flex space-x-2">
-            <input type="text" [(ngModel)]="newText" placeholder="Ej. Revisar documentación" class="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-            <button (click)="insertEvent()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-3 rounded-lg transition-colors">Añadir</button>
+            <input
+              type="text"
+              [(ngModel)]="newText"
+              placeholder="Ej. Revisar documentación"
+              class="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            />
+            <button
+              (click)="insertEvent()"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-3 rounded-lg transition-colors"
+            >
+              Añadir
+            </button>
           </div>
         </div>
       </div>
@@ -43,41 +65,71 @@
       <!-- Visor de eventos del día seleccionado -->
       <div>
         <h3 class="text-sm font-bold text-slate-700 mb-3">
-          Tareas programadas {{ selectDate() ? 'para el ' + selectDate : '(Selecciona una fecha arriba)' }}:
+          Tareas programadas
+          {{ selectDate() ? 'para el ' + selectDate : '(Selecciona una fecha arriba)' }}:
         </h3>
-        
+
         <ul class="space-y-2" *ngIf="eventFilter().length > 0; else noEventos">
-          <li *ngFor="let ev of eventFilter()" class="flex items-center space-x-3 p-3 bg-indigo-50/60 border border-indigo-100 rounded-xl">
+          <li
+            *ngFor="let ev of eventFilter()"
+            class="flex items-center space-x-3 p-3 bg-indigo-50/60 border border-indigo-100 rounded-xl"
+          >
             <span class="w-2 h-2 bg-indigo-600 rounded-full"></span>
             <span class="text-sm font-medium text-slate-700">{{ ev.text }}</span>
+            <button
+              (click)="deleteEvent(ev.id)"
+              class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1 rounded transition-colors font-medium"
+            >
+              Eliminar
+            </button>
           </li>
         </ul>
         <ng-template #noEventos>
-          <p class="text-xs text-slate-400 italic p-3 bg-slate-50 rounded-xl border border-dashed border-slate-200">No hay tareas agendadas en esta fecha.</p>
+          <p
+            class="text-xs text-slate-400 italic p-3 bg-slate-50 rounded-xl border border-dashed border-slate-200"
+          >
+            No hay tareas agendadas en esta fecha.
+          </p>
         </ng-template>
       </div>
     </div>
 
     <!-- COLUMNA 3: Card de Manuales de Acceso -->
-    <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-xs flex flex-col items-center justify-between text-center h-full">
+    <div
+      class="bg-white border border-slate-200 p-6 rounded-2xl shadow-xs flex flex-col items-center justify-between text-center h-full"
+    >
       <div class="w-full flex flex-col items-center">
         <!-- Icono/Imagen representativo de libros usando SVG corporativo -->
         <div class="bg-amber-50 p-5 rounded-2xl mb-4 text-amber-600">
-          <svg class="w-16 h-16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://w3.org">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path>
+          <svg
+            class="w-16 h-16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://w3.org"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+            ></path>
           </svg>
         </div>
         <h3 class="text-lg font-bold text-slate-800">Biblioteca Técnica</h3>
         <p class="text-xs text-slate-500 mt-2 px-2">
-          Consulta las normativas, guías de desarrollo y manuales corporativos aprobados para tu puesto.
+          Consulta las normativas, guías de desarrollo y manuales corporativos aprobados para tu
+          puesto.
         </p>
       </div>
 
       <!-- Enlace hacia la nueva subpágina de manuales -->
-      <button routerLink="/manuals" class="w-full mt-6 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors shadow-xs active:scale-[0.98]">
+      <button
+        routerLink="/manuals"
+        class="w-full mt-6 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors shadow-xs active:scale-[0.98]"
+      >
         Ver Manuales
       </button>
     </div>
-
   </main>
 </div>
