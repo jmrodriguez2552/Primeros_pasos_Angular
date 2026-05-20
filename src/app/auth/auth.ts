@@ -42,6 +42,28 @@ export class Auth {
     return false;
   }
 
+  register(name:string, surname:string, email:string, password:string, rol:string = 'empleado'): Observable<any> {
+    const body = {name, surname, email, password, rol};
+    return this.http.post('http://localhost:8000/auth/register', body);
+
+  }
+
+  // Descodifica el payload del JWT y extrae el campo 'rol'
+  getUserRole(): string {
+    const token = localStorage.getItem('token');
+    if (!token) return '';
+    try {
+      // Separamos las 3 partes del JWT y cogemos el payload (la del medio)
+      const payloadBase64 = token.split('.')[1];
+      // Descodificamos el string Base64 a JSON string
+      const payloadJson = atob(payloadBase64);
+      const payload = JSON.parse(payloadJson);
+      return payload.rol || 'empleado';
+    } catch (e) {
+      return '';
+    }
+  }
+
   logout(): void {
     localStorage.removeItem('token');
   }

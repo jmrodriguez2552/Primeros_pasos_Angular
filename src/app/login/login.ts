@@ -32,7 +32,13 @@ export class Login {
     // Llamamos al servicio asíncrono y nos suscribimos al resultado
     this.auth.login(this.email, this.password).subscribe({
       next: (response) => {
-        this.router.navigate(["/dashboard"]);
+        const role = this.auth.getUserRole();
+        if(role === 'admin'){
+          this.router.navigate(["/dashboard"]);
+        }else{
+          this.router.navigate(["/home"]);
+        }
+        
       },
       error: (err) => {
         if (err.status === 401) {

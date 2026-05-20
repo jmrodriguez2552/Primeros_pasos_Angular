@@ -1,25 +1,60 @@
-    <div class="min-h-screen bg-slate-50 font-sans">
-      
-      <!-- Barra de navegación superior header -->
-      <app-header></app-header>
+<div class="min-h-screen bg-slate-50 font-sans">
+  <!-- Barra de navegación superior header -->
+  <app-header></app-header>
 
-      <!-- Contenido Principal -->
-      <main class="max-w-4xl mx-auto mt-12 p-6">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex items-center space-x-3 mb-4">
-            <span class="p-3 bg-green-100 text-green-600 rounded-full text-xl">🎉</span>
-            <h1 class="text-2xl font-bold text-slate-800">¡Bienvenido al Panel de Control Privado!</h1>
-          </div>
-          <p class="text-slate-600 leading-relaxed">
-            Has iniciado sesión correctamente. Esta ruta está completamente protegida por tu guardián de rutas (Route Guard) y no es accesible sin un token válido en el almacenamiento local.
-          </p>
-          <hr class="border-slate-200 my-6">
+  <!-- Contenido Principal -->
+  <main class="max-w-4xl mx-auto mt-12 p-6">
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center space-x-3 mb-4">
+        <span class="p-3 bg-green-100 text-green-600 rounded-full text-xl">🎉</span>
+        <h1 class="text-2xl font-bold text-slate-800">¡Bienvenido al Panel de Control Privado!</h1>
+      </div>
+      <p class="text-slate-600 leading-relaxed">
+        Has iniciado sesión correctamente. Esta ruta está completamente protegida por tu guardián de
+        rutas (Route Guard) y no es accesible sin un token válido en el almacenamiento local.
+      </p>
+      <hr class="border-slate-200 my-6" />
 
-          <!-- 3. Renderizamos el componente de tareas de administración -->
-          <app-task-list></app-task-list>
+      <!-- 3. Renderizamos el componente de tareas de administración -->
+      <app-task-list></app-task-list>
 
-          <app-empleado-list></app-empleado-list>
-          
+      <!-- Card pequeña de acceso al Registro de Empleados -->
+      <div
+        class="bg-white border border-slate-200 p-5 rounded-2xl max-w-xs shadow-sm flex flex-col items-center text-center mt-4"
+      >
+        <!-- Imagen representativa de empleados integrada usando SVG minimalista (así no dependes de assets locales) -->
+        <div class="bg-indigo-50 p-4 rounded-full mb-4">
+          <svg
+            class="w-12 h-12 text-indigo-600"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://w3.org"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.63-2.755 9.04 9.04 0 01-4.222 1.147 9.04 9.04 0 01-4.223-1.146 3 3 0 00-4.63 2.755 9.094 9.094 0 003.741.479m13.74-4.72a3 3 0 11-5.714-1.05m5.714 1.05a3 3 0 11-5.714-1.05m-5.714 0a3 3 0 11-5.714 1.05m5.714-1.05a3 3 0 11-5.714 1.05m12 3.36a3 3 0 00-3.478-3.477 4.5 4.5 0 01-7.044 0 3 3 0 00-3.478 3.477m4.688-4.524a4.5 4.5 0 017.478 0M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+            ></path>
+          </svg>
         </div>
-      </main>
+
+        <h3 class="text-base font-bold text-slate-800">Panel de Personal</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Añade nuevos empleados al sistema centralizado.
+        </p>
+
+        <!-- Al pulsar, el routerLink redirigirá hacia la nueva pantalla -->
+        <button
+          routerLink="/register_employee"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-colors shadow-xs active:scale-[0.98]"
+        >
+          Registrar Empleado
+        </button>
+      </div>
+
+      <app-empleado-list></app-empleado-list>
     </div>
+  </main>
+</div>
