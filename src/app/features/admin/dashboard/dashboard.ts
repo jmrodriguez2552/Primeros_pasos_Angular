@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth } from '../auth/auth';
-import { TaskList } from '../task-list/task-list';
-import { EmpleadoList } from '../empleado-list/empleado-list';
-import { Header } from '../header/header';
+import { Auth } from '../../../core/services/auth.js';
+import { TaskList } from '../task-list/task-list.js';
+import { EmpleadoList } from '../empleado-list/empleado-list.js';
+import { Header } from '../header.js'; 
 import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [TaskList, EmpleadoList, Header, RouterModule],
+  imports: [EmpleadoList, Header, RouterModule, TaskList],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

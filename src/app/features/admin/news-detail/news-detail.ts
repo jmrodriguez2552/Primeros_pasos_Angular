@@ -1,6 +1,6 @@
 import { Component, signal, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Header } from '../header/header'; 
+import { Header } from '../header';  
 
 
 @Component({

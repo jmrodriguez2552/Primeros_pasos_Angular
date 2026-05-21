@@ -1,6 +1,6 @@
 import { Component, inject} from '@angular/core';
 import { Router } from '@angular/router';
-import { Header } from '../header/header';
+import { Header } from '../header';
 import { NewsDetail } from '../news-detail/news-detail';
 
 

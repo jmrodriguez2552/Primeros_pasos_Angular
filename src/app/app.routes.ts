@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { Login } from './login/login';
-import { Dashboard } from './dashboard/dashboard';
-import { authGuard } from './auth/auth-guard';
-import { NewsHome } from './news-home/news-home';
-import { NewsDetail } from './news-detail/news-detail';
-import { FaqPageComponent } from './faq-page/faq-page.component';
-import { TaskList } from './task-list/task-list';
-import { Register_employeeComponent } from './register_employee/register_employee.component';
-import { HomeComponent } from './home/home.component';
-import { ManualsComponent } from './manuals/manuals.component';
+import { Login } from './features/auth/login/login'; 
+import { Dashboard } from './features/admin/dashboard/dashboard'; 
+import { authGuard } from './core/guards/auth-guard';
+import { NewsHome } from './features/admin/news-home/news-home'; 
+import { NewsDetail } from './features/admin/news-detail/news-detail'; 
+import { FaqPageComponent } from './features/admin/faq-page/faq-page.component'; 
+import { TaskList } from './features/admin/task-list/task-list';
+import { Register_employeeComponent } from './features/admin/register_employee/register_employee.component'; 
+import { HomeComponent } from './features/employee/home/home.component'; 
+import { ManualsComponent } from './features/employee/manuals/manuals.component';
 
 
 export const routes: Routes = [

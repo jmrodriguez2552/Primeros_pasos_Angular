@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Header } from '../header/header';
+import { Header } from '../header'; 
 import { FaqContentComponent } from '../faq-content/faq-content.component';
 
 @Component({

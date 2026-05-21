@@ -2,8 +2,8 @@ import { Component, OnInit , signal, computed} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Auth } from '../auth/auth';
-import { Event, EventService } from '../services/event.service';
+import { Auth } from '../../../core/services/auth'; 
+import { Event, EventService } from '../../../core/services/event.service'; 
 import { Router } from '@angular/router';
 import { error } from 'console';
 
